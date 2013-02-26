@@ -102,7 +102,7 @@ function lscolorprompt() {
         elif [ "${distro}" == "Ubuntu" ]; then
                 export PS1="$BLUE[$RED\000LZShell$LIGHT_BLUE \t$BLUE]$GRAY=$LIGHT_GRAY-$GRAY=$BLUE<$BROWN${distro}$BLUE>$GRAY=$LIGHT_GRAY-$GRAY=$BLUE($CYAN\u$GRAY @ $LIGHT_CYAN\H$BLUE)\n$BLUE($YELLOW\w$BLUE)$NORM # "
         else
-                bwprompt
+                lsbwprompt
         fi  
 }
 
