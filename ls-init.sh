@@ -75,7 +75,11 @@ function lscolors() {
 	blinkmagenta='\E[5;1;35m';
 	blinkcyan='\E[5;1;36m';
 	blinkwhite='\E[5;1;37m';
-	alias ls='ls --color'
+	if [ "${distro}" == "FreeBSD" ]; then
+		alias ls='ls -G'
+	else
+		alias ls='ls --color'
+	fi
 }
 
 function lsversion(){
@@ -115,8 +119,10 @@ function lsbwprompt() {
 function ostype() {
 	if [ -e /etc/redhat-release ]; then
 		export distro="Redhat/CentOS"
-	elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
+	elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" || "Debian" ]; then
 		export distro="Ubuntu"
+	elif ["$(uname -s)" == "FreeBSD" ]; then
+		export distro="FreeBSD"
 	else
 		echo -e "Could not detect distribution type." && export distro="Other"
 	fi
@@ -128,6 +134,8 @@ function lsinfo() {
                 cat /etc/redhat-release
         elif [ "${distro}" == "Ubuntu" ]; then
                 lsb_release -d
+		elif [ "${distro}" == "FreeBSD" ]; then
+				uname -sr
         else
                 echo "Could not detect distribution type."
         fi
@@ -482,19 +490,6 @@ function _aliases() {
 	alias lsapitools="lz apitools"
 }
 
-function lsheart() {
-cat <<-EOF
-$RED .:::.    .:::.
- :::::::.:::::::
- :::::::::::::::
- ':::::::::::::'
-   ':::::::::'
-    ':::::'
-      ':'
-HAPPY VALENTINES DAY!$NORM
-EOF
-}
-
 function lslogin() {
 	# Set of commands to run at login
 	lsresize
@@ -507,7 +502,6 @@ function lslogin() {
 	# Print the MOTD
 	cat /etc/motd
 	echo -e "LazyScripts Project Page - https://github.com/hhoover/lazyscripts"
-    lsheart
 }
 
 # Run these functions at source time
